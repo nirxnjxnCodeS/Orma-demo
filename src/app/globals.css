@@ -1,0 +1,104 @@
+@import "tailwindcss";
+
+/* Font families come from next/font CSS variables set on <html>. */
+@theme inline {
+  --font-sans: var(--font-atkinson), system-ui, sans-serif;
+  --font-ml: var(--font-noto-ml), var(--font-atkinson), sans-serif;
+}
+
+@theme {
+  --color-call-bg: #0f1412;
+  --color-call-fg: #f5f0e6;
+  --color-call-dim: #b4bdb7;
+  --color-halo: #e8b04a;
+  --color-end: #c8321f;
+  --color-paper: #faf6ee;
+  --color-ink: #1b1a17;
+  --color-ink-2: #4a463e;
+  --color-rule: #d9d2c3;
+  --color-st-new: #1d4ed8;
+  --color-st-same: #3f4a44;
+  --color-st-changed: #7a4a00;
+  --color-st-stopped: #9f1d14;
+  --color-ok: #14532d;
+  --color-open-bg: #fff1d6;
+  --color-open-fg: #7a2e00;
+  --color-open-edge: #c2410c;
+
+  --text-call-name: 3rem;
+  --text-call-name--line-height: 1.1;
+  --text-call-state: 1.75rem;
+  --text-call-state--line-height: 1.25;
+  --text-call-timer: 1.375rem;
+  --text-call-timer--line-height: 1;
+  --text-rec-drug: 1.625rem;
+  --text-rec-drug--line-height: 1.2;
+  --text-rec-body: 1.3125rem;
+  --text-rec-body--line-height: 1.4;
+  --text-rec-label: 1.125rem;
+  --text-rec-label--line-height: 1.2;
+
+  --spacing-target: 4.75rem;
+  --spacing-target-min: 3.5rem;
+  --spacing-halo: 10rem;
+  --spacing-callbar: 4.5rem;
+
+  --ease-arrive: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --animate-orbit: orbit 2.4s linear infinite;
+  --animate-breathe: breathe 2.4s ease-in-out infinite;
+  --animate-row-in: row-in 360ms var(--ease-arrive) both;
+
+  @keyframes orbit {
+    to { transform: rotate(360deg); }
+  }
+  @keyframes breathe {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 0.8; }
+  }
+  @keyframes row-in {
+    from { opacity: 0; transform: translateY(12px); }
+  }
+}
+
+html,
+body {
+  background: var(--color-call-bg);
+  color: var(--color-call-fg);
+}
+
+/* Malayalam: more vertical room. Matches the element's own or inherited lang. */
+:lang(ml) { font-family: var(--font-ml); }
+.text-call-name:lang(ml)  { font-size: 2.75rem;  line-height: 1.35; }
+.text-call-state:lang(ml) { font-size: 1.625rem; line-height: 1.6; }
+.text-rec-drug:lang(ml)   { font-size: 1.5rem;   line-height: 1.45; }
+.text-rec-body:lang(ml)   { font-size: 1.25rem;  line-height: 1.7; }
+.text-rec-label:lang(ml)  { line-height: 1.55; }
+
+.hatch {
+  background: repeating-linear-gradient(
+    135deg,
+    var(--color-open-edge) 0 6px,
+    var(--color-paper) 6px 12px
+  );
+}
+
+/* Halo ring: JS writes --amp (0–1). Motion preference picks scale vs opacity. */
+.halo-ring {
+  --amp: 0;
+  transform: scale(calc(1 + var(--amp) * 0.18));
+  opacity: calc(0.55 + var(--amp) * 0.45);
+  transition: transform 80ms linear, opacity 80ms linear;
+}
+@media (prefers-reduced-motion: reduce) {
+  .halo-ring {
+    transform: none;
+    opacity: calc(0.35 + var(--amp) * 0.65);
+  }
+}
+
+/* Fixed-width digits so the timer never jitters, regardless of font tnum support. */
+.timer-digit {
+  display: inline-block;
+  width: 0.62em;
+  text-align: center;
+}
